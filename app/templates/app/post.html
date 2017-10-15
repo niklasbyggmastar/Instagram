@@ -1,0 +1,58 @@
+{% include 'app/header.html' %}
+
+<div class="post_div">
+  <a class="user_profile_link" href="{% url 'profile' post.user_name.user.id %}"><img class="profile_icon" src="../../media/{{ post.user_name.pic }}" alt="Image"><h4 class="user_name">{{ post.user_name }}</h4></a>
+  {% if post.user_name.user.id is not request.user.id %}
+    {% if post.user_name.user.id in request.user.profile.following %}
+      <a style="float:right" href="{% url 'follow' post.user_name.user.id %}"><button class="btn btn-danger btn-sm">Unfollow</button></a>
+    {% elif post.user_name.user.id not in request.user.profile.following %}
+      <a style="float:right" href="{% url 'follow' post.user_name.user.id %}"><button class="btn btn-primary btn-sm">Follow</button></a>
+    {% endif %}
+  {% endif %}
+  <hr class="light">
+  <img class="img img-responsive" src="../../media/{{ post.img }}" alt="Image">
+  <hr class="light">
+  {% if post.id in user.profile.liked_post_list %}
+    <h3 class="button" value="{{ post.id }}" user="{{ user.id }}"><i class="fa fa-heart unlike_btn" aria-hidden="true"></i></h3>
+  {% else %}
+    <h3 class="button" value="{{ post.id }}" user="{{ user.id }}"><i class="fa fa-heart-o like_btn" aria-hidden="true"></i></h3>
+  {% endif %}
+  <h3 class="button"><i value="{{ post.id }}" class="fa fa-comment-o comment_btn" aria-hidden="true"></i></h3>
+  <h5 id="likes" value="{{ post.likes }}">{{ post.likes }} likes</h5>
+  <h5><a class="user_profile_link" href="{% url 'profile' post.user_name.user.id %}"><strong>{{ post.user_name }}</strong></a> {{ post.text }}</h5>
+  <h5>{{ post.date }}</h5>
+  {% if post.comment_set.all %}
+  <hr>
+    {% if post.comment_set.count > 3 %}
+      <h5><a href="#">Show all {{ post.comment_set.count }} comments</a></h5>
+    {% endif %}
+    {% for comment in post.comment_set.all|slice:":3" %}                       <!--Näyttää 3 viimeisintä kommenttia-->
+      <h5><a class="user_profile_link" href="{% url 'profile' comment.user_name.user.id %}"><strong>{{ comment.user_name }}</strong></a> {{ comment.text }}</h5>
+    {% endfor %}
+
+  {% endif %}
+
+  <div class="comment_div" id="{{ post.id }}">
+    <form class="form-group" action="{% url 'post_comment' post.id %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.path }}">
+      <div class="col-md-11 col-xs-10" style="padding:0px;">
+        <input class="form-control" type="text" name="comment" placeholder="Post a comment...">
+      </div>
+      <div class="col-md-1 col-xs-2" style="padding:0px;">
+        <button type="submit" class="btn btn-primary"><i class="fa fa-arrow-right"></i></button>
+      </div>
+
+
+    </form>
+  </div>
+
+</div>
+
+
+
+
+
+    </div>
+  </body>
+</html>

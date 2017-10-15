@@ -1,0 +1,198 @@
+{% include 'app/header.html' %}
+  <div class="profile_div">
+    <div class="row">
+      <div class="col-md-3">
+        <img src="../../media/{{ user_profile.pic }}" alt="Image" class="profile_pic img img-responsive">
+      </div>
+      <div class="col-md-9">
+        {% if user_profile.user.id is request.user.id %}
+          <h1 style="display:inline">{{ user_profile.user.username }}</h1>
+          <h3 style="display:inline; float:right;"><a href="#settings" data-toggle="modal" data-target="#settings">...</a></h3>
+          <h3 style="display:inline; float:right"><a href="#edit_profile" data-toggle="modal" data-target="#edit_profile"><i class="fa fa-cog" aria-hidden="true"></i></a></h3>
+          <br><br>
+        {% else %}
+          <h1>{{ user_profile.user.username }}</h1>
+        {% endif %}
+
+        {% if posts.count == 1 %}
+          <h5 style="display:inline"><strong>{{ posts.count }}</strong> post</h5>
+        {% else %}
+          <h5 style="display:inline"><strong>{{ posts.count }}</strong> posts</h5>
+        {% endif %}
+          <a class="user_profile_link" href="#following_list" data-toggle="modal" data-target="#following_list"><h5 style="display:inline"><strong>{{ user_profile.following|length }}</strong> following</h5></a>
+          <a class="user_profile_link" href="#follower_list" data-toggle="modal" data-target="#follower_list"><h5 style="display:inline"><strong>{{ user_profile.followers|length }}</strong> followers</h5></a>
+
+        {% if user_profile.user.id is not request.user.id %}
+          {% if user_profile.user.id in request.user.profile.following %}
+            <a style="float:right" href="{% url 'follow' user_profile.user.id %}"><button class="btn btn-danger btn-sm">Unfollow</button></a>
+          {% elif user_profile.user.id not in request.user.profile.following %}
+            <a style="float:right" href="{% url 'follow' user_profile.user.id %}"><button class="btn btn-primary btn-sm">Follow</button></a>
+          {% endif %}
+        {% endif %}
+
+        <hr>
+        <h4>{{ user_profile.bio }}</h4>
+      </div>
+    </div>
+    <div class="row">
+      <hr>
+      {% if posts %}
+        {% for post in posts %}
+          <div class="col-md-6 profile_list_of_posts">
+            <a href="{% url 'display_post' post.id %}"><img class="img img-responsive img-thumbnail profile_list_of_posts" src="../../media/{{ post.img }}" alt="Image"></a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-center">No posts yet</p>
+      {% endif %}
+    </div>
+
+
+
+
+  </div><!--profile_div-->
+                  <!---.....................EDIT PROFILE.........................-->
+  <div class="modal fade" id="edit_profile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Edit profile</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-group" action="{% url 'update_profile' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{ request.user.id }}">
+            <input class="form-control" type="text" name="bio" placeholder="Biography" value="{{ user_profile.bio }}">
+            <input class="form-control" type="text" name="location" placeholder="Location" value="{{ user_profile.location }}">
+            <label>Birth date</label>
+            <input class="form-control" type="date" name="birth_date" value="{{ user_profile.birth_date|date:'Y-m-d' }}">
+            <!--<input type="hidden" name="next" value="{{ request.path }}">-->
+            <input class="form-control btn btn-primary" type="submit" value="Submit">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!--seuraamisesta asynkroninen!!1-->
+
+
+
+                  <!---.....................FOLLOWING LIST.........................-->
+  <div class="modal fade" id="following_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Following</h4>
+        </div>
+        <div class="modal-body">
+          {% if followed_user_list %}
+          <ul class="list-group">
+            {% for user_followed in followed_user_list %}
+              <li class="list-group-item">
+                <a class="user_profile_link" href="{% url 'profile' user_followed.id %}">
+                  <img class="profile_icon_list" src="../../media/{{ user_followed.profile.pic }}" alt="Image">
+                  <h5 class="follow_list_username"> {{ user_followed.username }}</h5>
+                </a>
+                {% if user_followed.id is not request.user.id %}
+                  {% if user_followed.id in request.user.profile.following %}
+                    <a href="{% url 'follow' user_followed.id %}"><button style="float:right" class="btn btn-danger btn-xs" type="button">Unfollow</button></a>
+                  {% else %}
+                    <a href="{% url 'follow' user_followed.id %}"><button style="float:right" class="btn btn-primary btn-xs" type="button">Follow</button></a>
+                  {% endif %}
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+            <p class="text-center">No followings yet</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+                    <!---.....................FOLLOWER LIST.........................-->
+  <div class="modal fade" id="follower_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Followers</h4>
+        </div>
+        <div class="modal-body">
+          {% if follower_user_list %}
+          <ul class="list-group">
+            {% for follower in follower_user_list %}
+              <li class="list-group-item">
+                <a class="user_profile_link" href="{% url 'profile' follower.id %}">
+                  <img class="profile_icon_list" src="../../media/{{ follower.profile.pic }}" alt="Image">
+                  <h5 class="follow_list_username"> {{ follower.username }}</h5>
+                </a>
+                {% if follower.id is not request.user.id %}
+                  {% if follower.id in request.user.profile.following %}
+                    <a href="{% url 'follow' follower.id %}"><button style="float:right" class="btn btn-danger btn-xs" type="button">Unfollow</button></a>
+                  {% else %}
+                    <a href="{% url 'follow' follower.id %}"><button style="float:right" class="btn btn-primary btn-xs" type="button">Follow</button></a>
+                  {% endif %}
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+            <p class="text-center">No followers yet</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+                    <!---.....................SETTINGS.........................-->
+  <div class="modal fade" id="settings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Settings</h4>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group text-center">
+            <a href="#liked_post_modal" data-toggle="modal" data-target="#liked_post_modal"><li class="list-group-item">Liked posts</li></a>
+            <a href="{% url 'logout_view' %}"><li class="list-group-item">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></li></a>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+                      <!---.....................LIKED POSTS.........................-->
+  <div class="modal fade" id="liked_post_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Liked posts</h4>
+        </div>
+        <div class="modal-body row">
+          {% for post in liked_posts_img_list %}
+            <div class="col-md-4">
+              <a href="#"><img class="img img-responsive img-thumbnail profile_list_of_posts" src="../../media/{{ post.img }}" alt="Image"></a>
+            </div>
+          {% empty %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+    </div>
+  </body>
+</html>

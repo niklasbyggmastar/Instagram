@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Instagram</title>
+    <meta name="viewport" content="width=device-width, height=device-height initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js"></script>
+    <script src="https://use.fontawesome.com/ed0dce6850.js"></script>
+
+  <!--  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script> -->
+  <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.12/p5.min.js"></script>
+
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">-->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  </head>
+  <body>
+
+    <div class="container">
+      {% if user.is_authenticated %} <!---.........User is logged in..........--->
+        {% if no_profile %}
+          <div class="signup_div">
+            <h3 class="text-center">Fill in your profile details</h3>
+            <form class="form-group" action="{% url 'init_profile' %}" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="file" name="image" accept="image/*">
+              <input class="form-control" type="text" name="bio" placeholder="Biography">
+              <input class="form-control" type="text" name="location" placeholder="Location">
+              <input class="form-control" type="date" name="birth_date" placeholder="Birth date">
+              <input type="submit" class="form-control btn btn-primary" value="Submit">
+            </form>
+            <!--<h4 class="text-center"><a href="#">skip</a></h4>-->
+          </div>
+        {% else %}
+          <nav class="navbar navbar-default">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a href="{% url 'index' %}" class="navbar-brand nav_text">Instagram</a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                  <li><a href="#all_users" data-toggle="modal" data-target="#all_users">All</a></li>
+                  <!--<li><a href="{% url 'profile' user.id %}">Profile</a></li>-->
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="{% url 'explore' %}"><i class="fa fa-compass" aria-hidden="true"></i></a></li>
+                  <li><a href="{% url 'profile' request.user.id %}"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+                  <li><a href="#upload" data-toggle="modal" data-target="#upload"><i class="fa fa-upload" aria-hidden="true"></i></a></li>
+
+
+                  <!-- Upload modal -->
+                  <div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="myModalLabel">Upload</h4>
+                        </div>
+                        <div class="modal-body">
+                          <form class="form-group" action="{% url 'post_view' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="file" name="image" accept="image/*">
+                            <input class="form-control" type="text" name="text" placeholder="Description">
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <input class="form-control btn btn-primary" type="submit" value="Submit">
+                          </form>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- All users VÄLIAIKAINEN-->
+                  <div class="modal fade" id="all_users" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="myModalLabel">All users</h4>
+                        </div>
+                        <div class="modal-body">
+                          {% for user in all_users %}
+                            <a href="{% url 'profile' user.id %}"><li>{{ user }}</li></a>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!--<li><a href="{% url 'logout_view' %}">Logout</a></li>-->
+                </ul>
+              </div>
+          </nav>
+        {% endif %}
+      {% else %} <!---.........User not logged in..........--->
+        {% for message in messages %}
+          <div class="alert {{ message.tags }}" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+
+        <div class="login_div">
+          <h3 class="text-center">Login</h3>
+          <form class="form-group" action="{% url 'login_view' %}" method="post">
+            {% csrf_token %}
+            <input class="form-control" type="text" name="username" placeholder="Username">
+            <input class="form-control" type="password" name="password" placeholder="Password">
+            <input class="form-control btn btn-primary" type="submit" value="Login">
+            <h4 id="signup_btn" class="text-center">or <a href="{% url 'signup_view' %}">sign up</a></h4>
+          </form>
+        </div>
+      {% endif %}
+
+<script src="{% static 'js/script.js' %}"></script>
