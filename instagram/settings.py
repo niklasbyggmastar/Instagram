@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': 'nmb-instagram',
         'USER': 'postgres',
         'PASSWORD': 'Julla080997!',
-        'HOST': 'localhost',
+        'HOST': '',
         'PORT': '5432'
     }
 }
