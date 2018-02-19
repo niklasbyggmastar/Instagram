@@ -25,7 +25,7 @@ SECRET_KEY = '3dj96=*az_rk$n*a)ob%nbf8%s1$e4ng8(!*uwcxx6(!#=#iuz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["nmb-instagram.herokuapp.com", "localhost"]
 
 
 # Application definition
