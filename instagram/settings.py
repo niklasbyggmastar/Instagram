@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '3dj96=*az_rk$n*a)ob%nbf8%s1$e4ng8(!*uwcxx6(!#=#iuz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["nmb-instagram.herokuapp.com", "localhost"]
+ALLOWED_HOSTS = ["nmb-instagram.herokuapp.com"]
 
 
 # Application definition
@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'instagram.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'instagram',
+        'NAME': 'nmb-instagram',
         'USER': 'postgres',
         'PASSWORD': 'Julla080997!',
         'HOST': 'localhost',
