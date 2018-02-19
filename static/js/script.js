@@ -18,23 +18,23 @@ $(function(){
   });
 
 
-  $(".img_post").dblclick(function(){
+  /*$(".img_post").dblclick(function(){
     //animaatio sydän
-    //if ($( this ).closest("i").attr("class")=="unlike_btn"){
-    //  console.log("unlike'd");
-    //  $( this ).closest("i").removeClass("fa-heart unlike_btn").addClass("fa-heart-o like_btn");
-    //}else if ($( this ).closest("i").attr("class")=="like_btn") {
-    //  console.log("like'd");
+    var post_div = $( this ).closest("div");
+    if ($( "div > h3 i" ).hasClass("fa-heart unlike_btn")){
+      console.log("unlike'd");
+      //$( this ).closest("i").removeClass("fa-heart unlike_btn").addClass("fa-heart-o like_btn");
+    }else if ($( "div > h3 i" ).hasClass("fa-heart-o like_btn")){
+      console.log("like'd");
     //  $(this).removeClass("fa-heart-o like_btn").addClass("fa-heart unlike_btn");
-    //}else{
-    //  console.log("feil");
-    //}
-    var type = $(this).closest("a").attr("class");
-    alert(type);
+    }else{
+      console.log($( "div > h3 i" ).attr("class"));
+    }
+
     //var post_id = $( this ).attr("value");
     //var csrftoken = getCookie("csrftoken");
     //like(post_id, csrftoken);
-  });
+  });*/
 
 
   $(".fa.fa-heart-o.like_btn").one("click", function(){
