@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'instagram.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'nmb-instagram',
+        'NAME': 'ddt1ha5j926fv0',
         'USER': 'amggpflxxrxejk',
         'PASSWORD': '7e929006f0c79eb7f4bb2b856ca7b44134204026cf5722821fb65abdc9e31ad8',
         'HOST': 'ec2-174-129-221-240.compute-1.amazonaws.com',
