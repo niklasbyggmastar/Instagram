@@ -9,7 +9,7 @@ from .forms import SignUpForm
 from .models import Post, Comment, Profile
 
 def index(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         all_users = User.objects.all()#väliaikainen!11
         profile = Profile.objects.get(user=request.user)
         latest_posts = Post.objects.all().order_by('-date')
