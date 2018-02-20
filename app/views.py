@@ -156,7 +156,7 @@ def follow(request, user_id):
         profile.save()
         user_to_follow.profile.followers.remove(request.user.id)
         user_to_follow.profile.save()
-    return redirect("../../user/"+user_id)
+    return redirect("../../user/"+str(user_id))
 
 
 

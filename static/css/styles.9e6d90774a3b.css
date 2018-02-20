@@ -1,0 +1,156 @@
+.login_div{
+  margin: auto;
+  display: block;
+  margin-top: 25vh;
+  border-radius: 10px;
+  border: solid rgb(190,190,190) 1px;
+  padding: 20px;
+  background-color: white;
+}
+
+.post_div{
+  border: solid rgb(190,190,190) 1px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.signup_div{
+  margin: auto;
+  display: block;
+  border-radius: 10px;
+  border: solid rgb(190,190,190) 1px;
+  padding: 20px;
+  background-color: white;
+}
+
+@media screen and (min-width:1000px){
+  .login_div{
+    width: 500px;
+  }
+
+  .signup_div{
+    width: 500px;
+  }
+
+  .alert{
+    width: 600px;
+    margin: auto;
+    display: block;
+  }
+
+  .post_div, nav{
+    width:600px;
+    height: 100%;
+    margin:auto;
+    display:block;
+  }
+
+
+  .img-responsive{
+    margin-bottom: 0px;
+    width: 100%;
+  }
+
+  .light{
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .profile_div{
+    border: solid rgb(190,190,190) 1px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    width: 600px;
+    height: 100%;
+    margin: auto;
+    display: block;
+  }
+
+  .profile_pic{
+    width: 120px;
+    height: 120px;
+    border-radius: 120px;
+    margin-top: 12px;
+  }
+
+  .profile_list_of_posts{
+    height: 220px;
+    margin-bottom: 15px;
+  }
+
+
+}/*---------------------------------------------------------*/
+
+body{
+  background-color: rgb(246,246,246);
+}
+
+.explore_div{
+  height: 220px;
+  margin-bottom: 15px;
+}
+
+.user_profile_link{
+  color: black;
+}
+
+.user_profile_link:hover{
+  text-decoration: none;
+  color: black;
+}
+
+.profile_icon{
+  display: inline;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+}
+
+.profile_icon_list{
+  display: inline;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+}
+
+.follow_list_username{
+  display:inline;
+  font-size: 17px;
+}
+
+.follow_list_username:hover{
+  text-decoration: none;
+}
+
+.user_name{
+  display:inline;
+  margin-left: 10px;
+  margin-bottom: -10px;
+}
+
+.comment_div{
+  display: none;
+}
+
+.button{
+  display: inline;
+  margin-right: 15px;
+}
+
+.button:hover{
+  cursor: pointer;
+}
+
+.like_btn{
+  color:black;
+}
+
+.like_btn:hover{
+  color:red;
+}
+
+.unlike_btn{
+  color:red;
+}
